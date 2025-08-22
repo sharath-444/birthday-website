@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday!</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(to right, #ff9a9e, #fad0c4);
+        overflow: hidden;
+        text-align: center;
+        color: #fff;
+    }
+    h1 {
+        margin-top: 50px;
+        font-size: 60px;
+        text-shadow: 2px 2px 5px #000;
+    }
+    p {
+        font-size: 24px;
+        margin: 20px 0;
+    }
+    .cake {
+        font-size: 80px;
+        margin-bottom: 20px;
+        animation: bounce 1s infinite alternate;
+    }
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-20px); }
+    }
+    .balloon {
+        position: absolute;
+        width: 50px;
+        height: 70px;
+        border-radius: 50% 50% 50% 50%;
+        background-color: red;
+        opacity: 0.8;
+        animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(100vh); }
+        100% { transform: translateY(-200px); }
+    }
+    .button {
+        padding: 15px 30px;
+        font-size: 20px;
+        border: none;
+        border-radius: 10px;
+        background-color: #ff6f61;
+        color: #fff;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .button:hover {
+        background-color: #ff3b2f;
+    }
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎉 Happy Birthday! 🎉</h1>
+<p id="message">Wishing you a day filled with joy and cake! 🍰</p>
+<div class="cake">🎂</div>
+<button class="button" onclick="playMusic()">Click Me!</button>
+
+<audio id="music" src="birthday.mp3" loop></audio>
+
+<script>
+// ---------------- Confetti ----------------
+const colors = ["#ff0a54","#ff477e","#ff7096","#ff85a1","#fbb1b1","#f9bec7"];
+for(let i=0;i<150;i++){
+    let c = document.createElement("div");
+    c.classList.add("confetti");
+    c.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    c.style.left = Math.random()*window.innerWidth + "px";
+    c.style.animationDuration = 2 + Math.random()*3 + "s";
+    document.body.appendChild(c);
+}
+
+document.querySelectorAll(".confetti").forEach(c => {
+    let top = 0;
+    const fall = () => {
+        top += Math.random()*5;
+        c.style.top = top + "px";
+        if(top < window.innerHeight) requestAnimationFrame(fall);
+    }
+    fall();
+});
+
+// ---------------- Balloons ----------------
+function createBalloon(){
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    balloon.style.left = Math.random() * window.innerWidth + "px";
+    balloon.style.animationDuration = 5 + Math.random()*5 + "s";
+    document.body.appendChild(balloon);
+    setTimeout(() => balloon.remove(), 10000);
+}
+setInterval(createBalloon, 500);
+
+// ---------------- Messages ----------------
+const messages = [
+    "Hope you have an amazing birthday! 🎈",
+    "Eat lots of cake and smile! 🍰",
+    "Wishing you love, laughter, and fun! 🥳",
+    "May all your dreams come true! ✨"
+];
+let msgIndex = 0;
+setInterval(() => {
+    document.getElementById("message").textContent = messages[msgIndex];
+    msgIndex = (msgIndex + 1) % messages.length;
+}, 4000);
+
+// ---------------- Music ----------------
+function playMusic(){
+    document.getElementById("music").play();
+}
+</script>
+</body>
+</html>
